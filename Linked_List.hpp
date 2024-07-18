@@ -1,5 +1,6 @@
 #ifndef __Linked_List__
 #define __Linked_List__
+#include <iostream>
 
 namespace ll
 {
@@ -7,7 +8,7 @@ namespace ll
     struct Node
     {
         T val;
-        Node* next;
+        Node<T>* next;
         Node(T a) : val(a), next(nullptr) {}
     };
 
@@ -15,7 +16,7 @@ namespace ll
     class Linked_List
     {
         private:
-        Node* head;
+        Node<T>* head;
 
         public:
         Linked_List();
@@ -28,7 +29,8 @@ namespace ll
         void delete_at_pos(int);
         Node<T>* search(T);
         int list_length();
-        //T& operator[]();
+        T& operator[](int);
+        void print();
     };
 
     template <class T>
@@ -43,7 +45,7 @@ namespace ll
         }
         else
         {
-            Node* temp = NULL;
+            Node<T>* temp = NULL;
             while(head != NULL)
             {
                 temp = head;
@@ -56,7 +58,7 @@ namespace ll
     template <class T>
     void Linked_List<T>::insert_at_start(T new_data)
     {
-        Node* temp = new Node(new_data);
+        Node<T>* temp = new Node(new_data);
         temp->next = head;
         head = temp;
     }
@@ -66,13 +68,13 @@ namespace ll
     {
         if(head == NULL)
         {
-            Node* temp = new Node(new_data);
+            Node<T>* temp = new Node(new_data);
             temp->next = head;
             head = temp;
         }
         else
         {
-            Node* temp = head; 
+            Node<T>* temp = head; 
             while(temp->next != NULL)
                 temp = temp->next;
             temp->next = new Node(new_data);
@@ -84,7 +86,7 @@ namespace ll
     {
         if(head == NULL)
         {
-            Node* temp = new Node(new_data);
+            Node<T>* temp = new Node(new_data);
             temp->next = head;
             head = temp;
         }
@@ -94,10 +96,10 @@ namespace ll
         }
         else if(pos > 0)
         {
-            Node* temp = head; 
+            Node<T>* temp = head; 
             for(int i = 1; i < pos; i++)
                 temp = temp->next;
-            Node* temp1 = temp->next;
+            Node<T>* temp1 = temp->next;
             temp->next = new Node(new_data);
             (temp->next)->next = temp1;
         }
@@ -110,7 +112,7 @@ namespace ll
             return;
         else
         {
-            Node* temp = head->next;
+            Node<T>* temp = head->next;
             delete head;
             head = temp;
         }
@@ -128,7 +130,7 @@ namespace ll
         }
         else
         {
-            Node* temp = head;
+            Node<T>* temp = head;
             while((temp->next)->next != NULL)
                 temp = temp->next;
             delete temp->next;
@@ -147,10 +149,10 @@ namespace ll
         }
         else
         {
-            Node* temp = head;
+            Node<T>* temp = head;
             for(int i = 1; i < pos; i++)
                 temp = temp->next;
-            Node* temp1 = temp->next;
+            Node<T>* temp1 = temp->next;
             temp->next = temp1->next;
             delete temp1;
         }
@@ -165,7 +167,7 @@ namespace ll
         }
         else
         {
-            Node* temp = head;
+            Node<T>* temp = head;
             while(temp->next != NULL)
             {
                 if(temp->val == search_val)
@@ -176,8 +178,39 @@ namespace ll
         }
     }
 
-    //template <class T>
-    //int Linked_List<T>::list_length(T search_val)
+    template <class T>
+    int Linked_List<T>::list_length()
+    {
+        int length = 0;
+        Node<T>* temp = head;
+        while(temp != NULL)
+        {
+            temp = temp->next;
+            length++;
+        }
+        return length;
+    }
+
+    template<class T>
+    T& Linked_List<T>::operator[](int index)
+    {
+        Node<T>* temp = head;
+        for(int i = 0; i < index; i++)
+            temp = temp->next;
+        return temp->val;
+    }
+
+    template <class T>
+    void Linked_List<T>::print()
+    {
+        Node<T>* temp = head;
+        while(temp != NULL)
+        {
+            std::cout << temp->val << " -> ";
+            temp = temp->next;
+        }
+        std::cout << "NULL\n";
+    }
 }
 
 #endif

@@ -3,6 +3,11 @@
 
 int main()
 {
-    ll::Linked_List<int> list1;
-    list1.search(5);
+    ll::Linked_List<int> list;
+    list.insert_at_start(1);
+    list.insert_at_start(2);
+    list.insert_at_start(4);
+    list.insert_at_end(9);
+    list.insert_at_pos(5, 3);
+    list.print();
 }
