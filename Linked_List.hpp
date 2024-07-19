@@ -58,7 +58,7 @@ namespace ll
     template <class T>
     void Linked_List<T>::insert_at_start(T new_data)
     {
-        Node<T>* temp = new Node(new_data);
+        Node<T>* temp = new Node<T>(new_data);
         temp->next = head;
         head = temp;
     }
@@ -68,7 +68,7 @@ namespace ll
     {
         if(head == NULL)
         {
-            Node<T>* temp = new Node(new_data);
+            Node<T>* temp = new Node<T>(new_data);
             temp->next = head;
             head = temp;
         }
@@ -77,7 +77,7 @@ namespace ll
             Node<T>* temp = head; 
             while(temp->next != NULL)
                 temp = temp->next;
-            temp->next = new Node(new_data);
+            temp->next = new Node<T>(new_data);
         }
     }
 
@@ -86,7 +86,7 @@ namespace ll
     {
         if(head == NULL)
         {
-            Node<T>* temp = new Node(new_data);
+            Node<T>* temp = new Node<T>(new_data);
             temp->next = head;
             head = temp;
         }
@@ -100,7 +100,7 @@ namespace ll
             for(int i = 1; i < pos; i++)
                 temp = temp->next;
             Node<T>* temp1 = temp->next;
-            temp->next = new Node(new_data);
+            temp->next = new Node<T>(new_data);
             (temp->next)->next = temp1;
         }
     }
@@ -269,10 +269,10 @@ namespace dll
     void Doubly_Linked_List<T>::insert_at_start(T new_val)
     {
         if(head == NULL)
-            head = new Node(new_val);
+            head = new Node<T>(new_val);
         else
         {
-            Node<T>* temp = new Node(new_val);
+            Node<T>* temp = new Node<T>(new_val);
             temp->next = head;
             head = temp;
         }
@@ -282,13 +282,13 @@ namespace dll
     void Doubly_Linked_List<T>::insert_at_end(T new_val)
     {
         if(head == NULL)
-            head = new Node(new_val);
+            head = new Node<T>(new_val);
         else
         {
             Node<T>* temp = head;
             while(temp->next != NULL)
-                temp->next = temp;
-            temp->next = new Node(new_val);
+                temp = temp->next;
+            temp->next = new Node<T>(new_val);
             (temp->next)->prev = temp;
         }
     }
@@ -297,17 +297,124 @@ namespace dll
     void Doubly_Linked_List<T>::insert_at_pos(T new_val, int pos)
     {
         if(head == NULL)
-            head = new Node(new_val);
+            head = new Node<T>(new_val);
         else
         {
             Node<T>* temp = head;
             for(int i = 1; i < pos; i++)
                 temp = temp->next;
-            Node<T>* temp1 = new Node(new_val);
+            Node<T>* temp1 = new Node<T>(new_val);
             temp1->next = temp->next;
             temp1->prev = temp;
             temp->next = temp1;
         }
+    }
+
+    template <class T>
+    void Doubly_Linked_List<T>::delete_at_start()
+    {
+        if(head == NULL)
+            return;
+        else
+        {
+            Node<T>* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+
+    template <class T>
+    void Doubly_Linked_List<T>::delete_at_end()
+    {
+        if(head == NULL)
+            return;
+        else if(head->next == NULL)
+        {
+            delete head;
+            head = NULL;
+        }
+        else
+        {
+            Node<T>* temp = head;
+            while((temp->next)->next != NULL)
+                temp = temp->next;
+            delete temp->next;
+            temp->next = NULL;
+        }
+    }
+
+    template <class T>
+    void Doubly_Linked_List<T>::delete_at_pos(int pos)
+    {
+        if(head == NULL)
+            return;
+        else if(pos == 0)
+        {
+            delete_at_start();
+        }
+        else
+        {
+            Node<T>* temp = head;
+            for(int i = 1; i < pos; i++)
+                temp = temp->next;
+            Node<T>* temp1 = temp->next;
+            temp->next = temp1->next;
+            delete temp1;
+        }
+    }
+
+    template <class T>
+    Node<T>* Doubly_Linked_List<T>::search(T search_val)
+    {
+        if(head == NULL)
+        {
+            return NULL;
+        }
+        else
+        {
+            Node<T>* temp = head;
+            while(temp->next != NULL)
+            {
+                if(temp->val == search_val)
+                    return temp;
+                temp = temp->next;
+            }
+            return NULL;
+        }
+    }
+
+    template <class T>
+    int Doubly_Linked_List<T>::list_length()
+    {
+        int length = 0;
+        Node<T>* temp = head;
+        while(temp != NULL)
+        {
+            temp = temp->next;
+            length++;
+        }
+        return length;
+    }
+
+    template<class T>
+    Node<T>& Doubly_Linked_List<T>::operator[](int index)
+    {
+        Node<T>* temp = head;
+        for(int i = 0; i < index; i++)
+            temp = temp->next;
+        return *temp;
+    }
+
+    template <class T>
+    void Doubly_Linked_List<T>::print()
+    {
+        Node<T>* temp = head;
+        while(temp != NULL)
+        {
+            std::cout << temp->val << " <--> ";
+            temp = temp->next;
+        }
+        std::cout << "NULL\n";
     }
 }
 
