@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <chrono>
 #include "Linked_List.hpp"
+#include "timing.hpp"
 using namespace std;
 
 int main()
@@ -45,4 +47,11 @@ int main()
     doubly_list.print();
     doubly_list.delete_at_pos(1);
     doubly_list.print(); 
+
+    Timer timer;
+    timer.start();
+    for(int i=0; i < 15000; i++)
+        list.insert_at_end(6);
+    timer.end();
+    cout << "elapsed time: " << timer.get_time() << "s\n";
 }
